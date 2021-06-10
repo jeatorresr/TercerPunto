@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-                git credentialsId: 'GitHub-Token', 
+                git branch: 'main', credentialsId: 'GitHub-Token', 
                 url: 'https://github.com/jeatorresr/TercerPunto.git'
             }
         }
