@@ -1,4 +1,9 @@
 pipeline {
+    environment {
+        AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')        
+    } 
+
     agent any
     
     tools {nodejs "nodejs"}
@@ -30,7 +35,12 @@ pipeline {
         }
         stage('Deploy to AWS') {
             steps {
-                sh 'ls'
+                sh 'aws s3 sync build s3://tercerpunto --delete'
+            }
+        }
+        stage('Invalidate Cache') {
+            steps {
+                sh 'aws cloudfront create-invalidation --distribution-id "E1TD8XBADRO14I" --paths "/*"'
             }
         }
     }
